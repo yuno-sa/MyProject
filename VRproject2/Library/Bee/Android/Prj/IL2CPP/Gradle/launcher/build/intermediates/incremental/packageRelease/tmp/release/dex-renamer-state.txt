@@ -1,0 +1,4 @@
+#Wed Sep 21 13:17:03 JST 2022
+base.0=/Users/aikosenoo/VRproject2/Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/build/intermediates/dex/release/mergeDexRelease/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
