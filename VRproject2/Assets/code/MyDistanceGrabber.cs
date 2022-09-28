@@ -21,6 +21,7 @@ public class MyDistanceGrabber : MonoBehaviour
 
     private MyGrabbable _targetGrabbable;
     private MyGrabbable _grabbedGrabbable;
+    public GameObject Menu;
 
     void Start()
     {
@@ -32,15 +33,20 @@ public class MyDistanceGrabber : MonoBehaviour
 
         // 右か左かによってボタン、コントローラーの切り分け
         OVRInput.RawButton buttonType = OVRInput.RawButton.LHandTrigger;
+        OVRInput.RawButton buttonAX = OVRInput.RawButton.X;
         OVRInput.Controller controller = OVRInput.Controller.LTouch;
+        Menu.SetActive(false);
+
         switch (_handType)
         {
             case HandType.LEFT:
                 buttonType = OVRInput.RawButton.LHandTrigger;
+                buttonAX = OVRInput.RawButton.X;
                 controller = OVRInput.Controller.LTouch;
                 break;
             case HandType.RIGHT:
                 buttonType = OVRInput.RawButton.RHandTrigger;
+                buttonAX = OVRInput.RawButton.A;
                 controller = OVRInput.Controller.RTouch;
                 break;
         }
@@ -65,7 +71,7 @@ public class MyDistanceGrabber : MonoBehaviour
                 if (_grabbedGrabbable != null)
                 {
                     Vector3 dir = transform.forward;
-                    float mag = OVRInput.GetLocalControllerAcceleration(controller).magnitude;
+                    /*float mag = OVRInput.GetLocalControllerAcceleration(controller).magnitude;
                     if (mag < _minReleasePower)
                     {
                         mag = 0f;
@@ -74,10 +80,20 @@ public class MyDistanceGrabber : MonoBehaviour
                     if (mag > _maxReleasePower)
                     {
                         mag = _maxReleasePower;
-                    }
-                    Vector3 acc = dir.normalized * (mag * _powerAdjust);
+                    }*/
+                    Vector3 acc = dir;
                     _grabbedGrabbable.Release(acc);
                     _grabbedGrabbable = null;
+                }
+            }).AddTo(this);
+
+        this.UpdateAsObservable()
+            .Where(_ => OVRInput.GetUp(buttonAX))
+            .Subscribe(_ =>
+            {
+                if(_grabbedGrabbable != null)
+                {
+                    Menu.SetActive(true);
                 }
             }).AddTo(this);
     }

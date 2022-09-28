@@ -15,6 +15,8 @@ public class MyGrabbable : MonoBehaviour
     private Transform _defaultParent;
     private Outline _outline;
     private bool _isGrabbed = false;
+    private Vector3 initialPos;
+    private Quaternion initialRot;
 
     public bool OutLineEnabled
     {
@@ -32,6 +34,11 @@ public class MyGrabbable : MonoBehaviour
     void Start()
     {
         _defaultParent = transform.parent;
+        if (_rigidbody != null){
+           _rigidbody.isKinematic = false;
+           initialPos = transform.position;
+           initialRot = transform.rotation;
+        }
     }
 
     private IDisposable _grabDisposable;
@@ -75,7 +82,9 @@ public class MyGrabbable : MonoBehaviour
         if (_rigidbody != null)
         {
             _rigidbody.isKinematic = false;
-            _rigidbody.AddForce(controllerAcc, ForceMode.Impulse);
+            transform.position = initialPos;
+            transform.rotation = initialRot;
+            /*_rigidbody.AddForce(controllerAcc, ForceMode.Impulse);*/
         }
         _grabDisposable?.Dispose();
         _isGrabbed = false;
