@@ -39,6 +39,7 @@ public class MyGrabbable : MonoBehaviour
            initialPos = transform.position;
            initialRot = transform.rotation;
         }
+
     }
 
     private IDisposable _grabDisposable;
@@ -78,16 +79,31 @@ public class MyGrabbable : MonoBehaviour
         {
             return;
         }
-
         if (_rigidbody != null)
         {
+          _grabDisposable?.Dispose();
+          _grabDisposable = this.UpdateAsObservable()
+              .TakeWhile(_ => (transform.position - initialPos).sqrMagnitude > 0.1f * 0.1f).Subscribe(
+                  _ =>
+                  {
+                      //_rigidbody.isKinematic = false;
+                      Vector3 dir = (initialPos - transform.position).normalized;
+                      transform.position += dir * (10f * Time.deltaTime);
+                  }, () =>
+                  {
+                      //_rigidbody.isKinematic = false;
+                      transform.parent = _defaultParent;
+                      transform.position = initialPos;
+                      transform.rotation = initialRot;
+
+                  }).AddTo(this);
             _rigidbody.isKinematic = false;
-            transform.position = initialPos;
-            transform.rotation = initialRot;
+
+            //transform.position = initialPos;
+            //transform.rotation = initialRot;
             /*_rigidbody.AddForce(controllerAcc, ForceMode.Impulse);*/
         }
-        _grabDisposable?.Dispose();
         _isGrabbed = false;
-        transform.parent = _defaultParent;
+        //transform.parent = _defaultParent;
     }
 }

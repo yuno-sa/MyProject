@@ -21,7 +21,6 @@ public class MyDistanceGrabber : MonoBehaviour
 
     private MyGrabbable _targetGrabbable;
     private MyGrabbable _grabbedGrabbable;
-    public GameObject Menu;
 
     void Start()
     {
@@ -35,7 +34,6 @@ public class MyDistanceGrabber : MonoBehaviour
         OVRInput.RawButton buttonType = OVRInput.RawButton.LHandTrigger;
         OVRInput.RawButton buttonAX = OVRInput.RawButton.X;
         OVRInput.Controller controller = OVRInput.Controller.LTouch;
-        Menu.SetActive(false);
 
         switch (_handType)
         {
@@ -91,10 +89,7 @@ public class MyDistanceGrabber : MonoBehaviour
             .Where(_ => OVRInput.GetUp(buttonAX))
             .Subscribe(_ =>
             {
-                if(_grabbedGrabbable != null)
-                {
-                    Menu.SetActive(true);
-                }
+                
             }).AddTo(this);
     }
 
