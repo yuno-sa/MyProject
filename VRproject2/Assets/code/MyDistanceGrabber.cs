@@ -89,7 +89,7 @@ public class MyDistanceGrabber : MonoBehaviour
             .Where(_ => OVRInput.GetUp(buttonAX))
             .Subscribe(_ =>
             {
-                
+
             }).AddTo(this);
     }
 
