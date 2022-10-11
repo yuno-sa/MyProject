@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
@@ -17,6 +19,8 @@ public class MyGrabbable : MonoBehaviour
     private bool _isGrabbed = false;
     private Vector3 initialPos;
     private Quaternion initialRot;
+    private CustomTag ct;
+    private List<string> tags = new List<string>();
 
     public bool OutLineEnabled
     {
@@ -72,7 +76,21 @@ public class MyGrabbable : MonoBehaviour
                     transform.position = handTrans.position;
                 }).AddTo(this);
     }
-
+    public void SeeTags()
+    {
+        if(!_isGrabbed)
+        {
+            return;
+        }
+        int i = 0;
+        while(ct.GetAtIndex(i)!=null)
+        {
+            tags.Add(ct.GetAtIndex(i));
+            i++;
+        }
+        //GameObject child = transform.GetChild(1).gameObject;
+        //child.SetActive(true);
+    }
     public void Release(Vector3 controllerAcc)
     {
         if (!_isGrabbed)
@@ -86,12 +104,10 @@ public class MyGrabbable : MonoBehaviour
               .TakeWhile(_ => (transform.position - initialPos).sqrMagnitude > 0.1f * 0.1f).Subscribe(
                   _ =>
                   {
-                      //_rigidbody.isKinematic = false;
                       Vector3 dir = (initialPos - transform.position).normalized;
                       transform.position += dir * (10f * Time.deltaTime);
                   }, () =>
                   {
-                      //_rigidbody.isKinematic = false;
                       transform.parent = _defaultParent;
                       transform.position = initialPos;
                       transform.rotation = initialRot;
@@ -99,11 +115,7 @@ public class MyGrabbable : MonoBehaviour
                   }).AddTo(this);
             _rigidbody.isKinematic = false;
 
-            //transform.position = initialPos;
-            //transform.rotation = initialRot;
-            /*_rigidbody.AddForce(controllerAcc, ForceMode.Impulse);*/
         }
         _isGrabbed = false;
-        //transform.parent = _defaultParent;
     }
 }
