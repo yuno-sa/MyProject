@@ -15,9 +15,9 @@ public class MyDistanceGrabber : MonoBehaviour
     [SerializeField] private HandType _handType = HandType.LEFT;
     [SerializeField] private float _castCircleRadius = 0.2f;
     [SerializeField] private float _maxCastDistance = 3f;
-    [SerializeField, Range(0f, 1f)] private float _powerAdjust = 0.2f;
-    [SerializeField] private float _minReleasePower = 1f;
-    [SerializeField] private float _maxReleasePower = 100f;
+    //[SerializeField, Range(0f, 1f)] private float _powerAdjust = 0.2f;
+    //[SerializeField] private float _minReleasePower = 1f;
+    //[SerializeField] private float _maxReleasePower = 100f;
 
     private MyGrabbable _targetGrabbable;
     private MyGrabbable _grabbedGrabbable;
@@ -32,20 +32,26 @@ public class MyDistanceGrabber : MonoBehaviour
 
         // 右か左かによってボタン、コントローラーの切り分け
         OVRInput.RawButton buttonType = OVRInput.RawButton.LHandTrigger;
+        OVRInput.RawButton buttonTrigger = OVRInput.RawButton.LIndexTrigger;
         OVRInput.RawButton buttonAX = OVRInput.RawButton.X;
-        OVRInput.Controller controller = OVRInput.Controller.LTouch;
+        OVRInput.RawButton buttonBY = OVRInput.RawButton.Y;
+        //OVRInput.Controller controller = OVRInput.Controller.LTouch;
 
         switch (_handType)
         {
             case HandType.LEFT:
                 buttonType = OVRInput.RawButton.LHandTrigger;
+                buttonTrigger = OVRInput.RawButton.LIndexTrigger;
                 buttonAX = OVRInput.RawButton.X;
-                controller = OVRInput.Controller.LTouch;
+                buttonBY = OVRInput.RawButton.Y;
+                //controller = OVRInput.Controller.LTouch;
                 break;
             case HandType.RIGHT:
                 buttonType = OVRInput.RawButton.RHandTrigger;
+                buttonTrigger = OVRInput.RawButton.RIndexTrigger;
                 buttonAX = OVRInput.RawButton.A;
-                controller = OVRInput.Controller.RTouch;
+                buttonBY = OVRInput.RawButton.B;
+                //controller = OVRInput.Controller.RTouch;
                 break;
         }
 
@@ -69,30 +75,19 @@ public class MyDistanceGrabber : MonoBehaviour
                 if (_grabbedGrabbable != null)
                 {
                     Vector3 dir = transform.forward;
-                    /*float mag = OVRInput.GetLocalControllerAcceleration(controller).magnitude;
-                    if (mag < _minReleasePower)
-                    {
-                        mag = 0f;
-                    }
-
-                    if (mag > _maxReleasePower)
-                    {
-                        mag = _maxReleasePower;
-                    }*/
-                    Vector3 acc = dir;
-                    _grabbedGrabbable.Release(acc);
+                    _grabbedGrabbable.Release();
                     _grabbedGrabbable = null;
                 }
             }).AddTo(this);
 
         this.UpdateAsObservable()
-            .Where(_ => OVRInput.GetUp(buttonAX))
+            .Where(_ => OVRInput.GetDown(buttonTrigger))
             .Subscribe(_ =>
             {
-              if (_grabbedGrabbable != null)
-              {
-                _grabbedGrabbable.SeeTags();
-              }
+                if (_grabbedGrabbable != null)
+                {
+                    _grabbedGrabbable.SeeTags();
+                }
             }).AddTo(this);
     }
 

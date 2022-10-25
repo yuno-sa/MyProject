@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 
@@ -82,16 +83,17 @@ public class MyGrabbable : MonoBehaviour
         {
             return;
         }
-        int i = 0;
-        while(ct.GetAtIndex(i)!=null)
+        var multiTag = gameObject.GetComponent<CustomTag>();
+        int i = multiTag.Count;
+        for(int j = 0;j<i;j++)
         {
-            tags.Add(ct.GetAtIndex(i));
-            i++;
+            tags.Add(multiTag.GetAtIndex(j));
         }
-        //GameObject child = transform.GetChild(1).gameObject;
-        //child.SetActive(true);
+        //tags.Add("aaa");
+        transform.Find("TagsMenu").gameObject.GetComponent<WriteTags>().writetags(tags);
+        transform.Find("TagsMenu").gameObject.SetActive(true);
     }
-    public void Release(Vector3 controllerAcc)
+    public void Release()
     {
         if (!_isGrabbed)
         {
