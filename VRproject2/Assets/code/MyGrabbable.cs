@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using UniRx;
 using UniRx.Triggers;
 
@@ -22,6 +23,7 @@ public class MyGrabbable : MonoBehaviour
     private Quaternion initialRot;
     private CustomTag ct;
     private List<string> tags = new List<string>();
+    private GameObject canvas;
 
     public bool OutLineEnabled
     {
@@ -39,6 +41,7 @@ public class MyGrabbable : MonoBehaviour
     void Start()
     {
         _defaultParent = transform.parent;
+        canvas = GameObject.Find("Canvas");
         if (_rigidbody != null){
            _rigidbody.isKinematic = false;
            initialPos = transform.position;
@@ -89,9 +92,10 @@ public class MyGrabbable : MonoBehaviour
         {
             tags.Add(multiTag.GetAtIndex(j));
         }
-        //tags.Add("aaa");
-        transform.Find("TagsMenu").gameObject.GetComponent<WriteTags>().writetags(tags);
-        transform.Find("TagsMenu").gameObject.SetActive(true);
+        //canvas.SetActive(false);
+        canvas.GetComponent<WriteTags>().writetags(tags);
+        //transform.Find("TagsMenu").gameObject.GetComponent<WriteTags>().writetags(tags);
+        //transform.Find("TagsMenu").gameObject.SetActive(true);
     }
     public void Release()
     {
