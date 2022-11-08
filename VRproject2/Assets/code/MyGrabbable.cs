@@ -82,18 +82,18 @@ public class MyGrabbable : MonoBehaviour
     }
     public void SeeTags()
     {
+        //ここで何かをnewするものを入れたい。ボタンが毎回増え続ける原因探る
+        //あるいは、もう一度ボタンが押されたらクラッシュする、またはグッズを手放したらクラッシュ、を入れる
         if(!_isGrabbed)
         {
             return;
         }
         var multiTag = gameObject.GetComponent<CustomTag>();
-        int i = multiTag.Count;
-        for(int j = 0;j<i;j++)
-        {
-            tags.Add(multiTag.GetAtIndex(j));
-        }
+        //int i = multiTag.Count;
+        //tagsをクリアするか、multiTagから取ってきたものを直接入れる
+
         //canvas.SetActive(false);
-        canvas.GetComponent<WriteTags>().writetags(tags);
+        canvas.GetComponent<WriteTags>().Writetags(multiTag.GetTags());
         //transform.Find("TagsMenu").gameObject.GetComponent<WriteTags>().writetags(tags);
         //transform.Find("TagsMenu").gameObject.SetActive(true);
     }

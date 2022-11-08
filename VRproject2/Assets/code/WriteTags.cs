@@ -9,12 +9,11 @@ using UniRx.Triggers;
 
 public class WriteTags : MonoBehaviour
 {
-    private List<string> tags = new List<string>();
+    private List<string> tags;
     //private TextMeshPro targetText;
     //public GameObject gameobject;
-    private GameObject child;
-    private List<GameObject> childs;
-    private ChangeButton cb;
+    //private GameObject child;
+    //private List<GameObject> childs;
     //private string s;
     //private List<GameObject> Buttons = new List<GameObject>();
 
@@ -30,10 +29,8 @@ public class WriteTags : MonoBehaviour
 
     }
 
-    public void writetags(List<string> Tags)
+    public void Writetags(IEnumerable<string> t)
     {
-        childs = new List<GameObject>();
-        tags = Tags;
         //child = transform.GetChild(0).gameObject;
         //ここがおかしい↓
         //child.GetComponent<ChangeButton>().ChangeText(this.tags[0]);
@@ -41,15 +38,22 @@ public class WriteTags : MonoBehaviour
         //ここにテキスト追加コード
         //this.s = null;
         //targetText.text = "";
-        for(int i = 0;i<tags.Count;i++)
-        {
-            this.childs.Add(transform.GetChild(i).gameObject);
+
+        //今あるぼたんの中身をクリアする
+        var i = 0;
+        foreach(var tag in t){
+          transform.GetChild(i).gameObject.GetComponent<ButtonScript>().ChangeText(tag);
+          i++;
         }
-        for(int i = 0;i<tags.Count;i++)
-        {
-            this.childs[i].GetComponent<ChangeButton>().ChangeText(tags[i]);
-            this.childs[i].gameObject.SetActive(true);
-        }
+
+        // for(int i = 0;i<t.Count;i++)
+        // {
+        //     //transform.GetChild(i).gameObject.SetActive(true);
+        //     //child = transform.GetChild(i).gameObject;
+        //     transform.GetChild(i).gameObject.GetComponent<ChangeButton>().ChangeText(t[i]);
+        //     //transform.GetChild(i).gameObject.SetActive(true);
+        // }
+
         //this.childs[i].GetComponent<ChangeButton>().ChangeText(this.tags[i]);
         //this.childs[1].gameObject.SetActive();
         /*for(int i = 0;i<this.tags.Count;i++)
