@@ -16,6 +16,7 @@ public class ButtonScript : MonoBehaviour
     private TextMeshProUGUI buttontext;
     private Vector3 initialPos;
     public Transform target;
+    //private GameObject[] items;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class ButtonScript : MonoBehaviour
         buttontext = transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
         initialPos = new Vector3(transform.position.x,target.position.y-transform.position.y,transform.position.z);
         transform.position = new Vector3(100,100,100);
-        //buttontext = button.GetComponentInChildren<TextMeshPro>();
+        //items = GameObject.FindGameObjectsWithTag("All");
     }
 
     // Update is called once per frame
@@ -33,18 +34,13 @@ public class ButtonScript : MonoBehaviour
     }
     public void Clear()
     {
-        buttontext.text = "Clear";
+        transform.position = new Vector3(100,100,100);
     }
     public void ChangeText(string s)
     {
-        if(transform.position == new Vector3(100,100,100))
-        {
-            transform.position = new Vector3(target.position.x,target.position.y+initialPos.y,target.position.z);
-            transform.rotation = target.rotation;
-            buttontext.text = s;
-        }else{
-            transform.position = new Vector3(100,100,100);
-        }
+        transform.position = new Vector3(target.position.x,target.position.y+initialPos.y,target.position.z);
+        transform.rotation = target.rotation;
+        buttontext.text = s;
     }
     public void OnClick()
     {
@@ -56,18 +52,17 @@ public class ButtonScript : MonoBehaviour
         SceneManager.LoadScene("MainScene");シーン遷移
         SceneManager.LoadScene(ボタンのテキストを取得して、そのまま入れる→遷移できるようにする);
         */
-        //空のオブジェクトを作って、それぞれのタグの名前にする。そのオブジェクトを中心にして、円形に配置するようにする、とか
-        //transform.position = new Vector3(100,100,100);
-        GameObject[] items = GameObject.FindGameObjectsWithTag("All");
-        GameObject[] targets = GameObject.FindGameObjectsWithTag(buttontext.ToString());
-        buttontext.text = items.Count().ToString();
-        /*for(int i = 0;i<items.Count();i++)
+        /*GameObject[] goArray = GameObject.FindObjectsOfType<GameObject>();
+        for(int i = 0;i<goArray.Count;i++)
         {
-            if(!targets.Contains(items[i]))
+            if(!goArray[i].HasTag(buttontext.ToString()))
             {
-                items[i].SetActive(false);
+                goArray[i].SetActive(false);
             }
         }*/
+        GameObject cube = GameObject.Find("Cube");
+        cube.SetActive(false);
+        //GameObject[] targets = GameObject.FindGameObjectsWithTag(buttontext.ToString());
+        //buttontext.text = items.Count().ToString();
     }
-    //もう一個メソッドを作って、Writetagsが呼ばれた時に、オブジェクトを初期化するコードを追加する
 }

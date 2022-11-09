@@ -21,6 +21,7 @@ public class MyDistanceGrabber : MonoBehaviour
 
     private MyGrabbable _targetGrabbable;
     private MyGrabbable _grabbedGrabbable;
+    private bool _isMenu;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class MyDistanceGrabber : MonoBehaviour
         OVRInput.RawButton buttonAX = OVRInput.RawButton.X;
         OVRInput.RawButton buttonBY = OVRInput.RawButton.Y;
         //OVRInput.Controller controller = OVRInput.Controller.LTouch;
+        _isMenu = false;
 
         switch (_handType)
         {
@@ -55,7 +57,6 @@ public class MyDistanceGrabber : MonoBehaviour
                 break;
         }
 
-        // 中指ボタンが押されたとき
         this.UpdateAsObservable()
             .Where(_ => OVRInput.GetDown(buttonType))
             .Subscribe(_ =>
@@ -76,6 +77,7 @@ public class MyDistanceGrabber : MonoBehaviour
                 {
                     Vector3 dir = transform.forward;
                     _grabbedGrabbable.Release();
+                    _grabbedGrabbable.TagsClear();
                     _grabbedGrabbable = null;
                 }
             }).AddTo(this);
@@ -86,7 +88,16 @@ public class MyDistanceGrabber : MonoBehaviour
             {
                 if (_grabbedGrabbable != null)
                 {
-                    _grabbedGrabbable.SeeTags();
+                    if(!_isMenu)
+                    {
+                        _grabbedGrabbable.SeeTags();
+                        _isMenu = true;
+                    }
+                    else
+                    {
+                        _grabbedGrabbable.TagsClear();
+                        _isMenu = false;
+                    }
                 }
             }).AddTo(this);
     }
