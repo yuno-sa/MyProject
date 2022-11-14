@@ -79,6 +79,7 @@ public class MyDistanceGrabber : MonoBehaviour
                     _grabbedGrabbable.Release();
                     _grabbedGrabbable.TagsClear();
                     _grabbedGrabbable = null;
+                    _isMenu = false;
                 }
             }).AddTo(this);
 
