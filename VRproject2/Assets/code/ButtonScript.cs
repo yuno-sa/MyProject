@@ -20,7 +20,11 @@ public class ButtonScript : MonoBehaviour
     {
         buttontext = transform.GetChild(0).gameObject.GetComponentInChildren<TextMeshProUGUI>();
         initialPos = new Vector3(transform.position.x,target.position.y-transform.position.y,transform.position.z);
+<<<<<<< HEAD
         transform.position = new Vector3(10,10,10);
+=======
+        transform.position = new Vector3(100,0,100);
+>>>>>>> a03164aa7d4742bcc075d28538bf1f42484dcf4f
     }
 
     // Update is called once per frame
@@ -30,7 +34,11 @@ public class ButtonScript : MonoBehaviour
     }
     public void Clear()
     {
+<<<<<<< HEAD
         transform.position = new Vector3(10,10,10);
+=======
+        transform.position = new Vector3(100,0,100);
+>>>>>>> a03164aa7d4742bcc075d28538bf1f42484dcf4f
     }
     public void ChangeText(string s)
     {
@@ -47,6 +55,7 @@ public class ButtonScript : MonoBehaviour
             potentialTarget.gameObject.GetComponent<MyGrabbable>().Release();
             if (potentialTarget.HasTag(buttontext.text))
             {
+<<<<<<< HEAD
                 if(i>=5)
                 {
                     potentialTarget.gameObject.transform.position = new Vector3((float)(-0.8+(i-5)*0.3),(float)1.6,(float)2.3);
@@ -61,6 +70,14 @@ public class ButtonScript : MonoBehaviour
             else
             {
                 potentialTarget.gameObject.transform.position = new Vector3(10,10,10);
+=======
+                potentialTarget.gameObject.transform.position = new Vector3((float)(-1+i*0.3),(float)1.5,(float)2.2);
+                i++;
+            }
+            else
+            {
+                potentialTarget.gameObject.transform.position = new Vector3(100,0,100);
+>>>>>>> a03164aa7d4742bcc075d28538bf1f42484dcf4f
             }
         }
         i = 0;
